@@ -77,9 +77,9 @@ impl<'de> de::Deserialize<'de> for InputValue {
                 E: de::Error,
             {
                 if value >= i64::from(i32::min_value()) && value <= i64::from(i32::max_value()) {
-                    Ok(InputValue::int(i32::from(value)))
+                    Ok(InputValue::int(value as i32))
                 } else {
-                    Err(E::custom(format!("integer out of range")))
+                    Err(E::custom("integer out of range"))
                 }
             }
 
@@ -87,10 +87,10 @@ impl<'de> de::Deserialize<'de> for InputValue {
             where
                 E: de::Error,
             {
-                if value <= u64::from(i32::max_value()) {
-                    self.visit_i64(i64::from(value))
+                if value <= i32::max_value() as u64 {
+                    self.visit_i64(value as i64)
                 } else {
-                    Err(E::custom(format!("integer out of range")))
+                    Err(E::custom("integer out of range"))
                 }
             }
 
